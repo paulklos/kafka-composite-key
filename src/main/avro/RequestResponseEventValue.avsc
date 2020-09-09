@@ -23,7 +23,7 @@
       "name": "size",
       "type": [
         "null",
-        "string"
+        "int"
       ],
       "default": null
     },

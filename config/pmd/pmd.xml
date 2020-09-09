@@ -49,7 +49,7 @@
     <properties>
       <property name="xpath">
         <value>
-          //VariableDeclaratorId[(string-length(@Image) &lt; 3) and (not (@Image='id'))]
+          //VariableDeclaratorId[(string-length(@Name) &lt; 3) and (not (@Name='id'))]
           [not(ancestor::ForInit)]
           [not((ancestor::FormalParameter) and (ancestor::TryStatement))]
         </value>
@@ -60,7 +60,7 @@
     <properties>
       <property name="xpath">
         <value>
-          //VariableDeclaratorId[(string-length(@Image) &lt; 3) and (not (@Image='id'))]
+          //VariableDeclaratorId[(string-length(@Name) &lt; 3) and (not (@Name='id'))]
           [not(ancestor::ForInit)]
           [not((ancestor::FormalParameter) and (ancestor::TryStatement))]
         </value>
@@ -98,7 +98,7 @@
   <rule ref="category/java/design.xml/LawOfDemeter">
     <properties>
         <property name="violationSuppressXPath"
-                value="//Expression//*//Name[starts-with(@Image, 'ResponseEntity') or contains(@Image, 'Builder') or starts-with(@Image, 'Stream')] | //BlockStatement//*//PrimarySuffix[starts-with(@Image, 'stream') or starts-with(@Image, 'forEach') or contains(@Image, 'Builder') or contains(@Image, 'build')] | //BlockStatement//*//PrimaryPrefix//Name[contains(@Image, 'stream') or contains(@Image, 'Builder') or contains(@Image, 'build') or contains(@Image, 'forEach')]"/>
+                  value="//Expression//*//Name[starts-with(@Image, 'ResponseEntity') or contains(@Image, 'Builder') or starts-with(@Image, 'Stream')] | //BlockStatement//*//PrimarySuffix[starts-with(@Image, 'stream') or starts-with(@Image, 'forEach') or contains(@Image, 'Builder') or contains(@Image, 'build')] | //BlockStatement//*//PrimaryPrefix//Name[contains(@Image, 'stream') or contains(@Image, 'Builder') or contains(@Image, 'build') or contains(@Image, 'forEach')]"/>
     </properties>
   </rule>
   <rule ref="category/java/design.xml/NcssCount">

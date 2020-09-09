@@ -1,0 +1,10 @@
+hawaii:
+  async:
+    configuration: ./config/async-config.yml
+
+kafka:
+  broker:
+    addresslist: localhost:19092,localhost:29092,localhost:39092
+  schemaRegistry:
+    url: http://localhost:19091
+

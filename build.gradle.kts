@@ -1,4 +1,3 @@
-import com.github.spotbugs.SpotBugsTask
 import kotlin.text.Charsets.UTF_8
 
 // Both 'group' and 'version' are default Gradle properties so they need to be set here
@@ -23,7 +22,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath(group = "org.springframework.boot", name = "spring-boot-gradle-plugin", version = "2.2.5.RELEASE")
+        classpath(group = "org.springframework.boot", name = "spring-boot-gradle-plugin", version = "2.3.3.RELEASE")
         classpath(group = "com.commercehub.gradle.plugin", name = "gradle-avro-plugin", version = "0.21.0")
     }
 }
@@ -56,7 +55,7 @@ plugins {
     id("com.softeq.gradle.itest") version "1.0.4"
 
     // non standard plugins quality plugins for gradle
-    id("com.github.spotbugs") version "3.0.0"
+    id("com.github.spotbugs") version "4.5.0"
 
     // adds the asciidoctor commands to our build which enables us to generate output formats for our documentation.
     id("org.asciidoctor.jvm.convert") version "3.1.0"
@@ -72,7 +71,6 @@ plugins {
 //         compatibility issues and should be done with care.
 apply(plugin = "io.spring.dependency-management")
 apply(plugin = "com.commercehub.gradle.plugin.avro")
-
 
 springBoot {
     buildInfo {
@@ -103,26 +101,13 @@ dependencies {
     // to indicate this is a web/rest application
     implementation(group = "org.springframework.boot", name = "spring-boot-starter-web")
 
-    // Spring Boot provides a spring-boot-starter-security starter that aggregates Spring Security related dependencies together.
-    implementation(group = "org.springframework.boot", name = "spring-boot-starter-security")
     // Spring Boot provides a spring-boot-starter-actuator starter that creates a (among others) /health endpoint which k8s uses for monitoring.
     implementation(group = "org.springframework.boot", name = "spring-boot-starter-actuator")
-    // webflux provides the reactive web client
-    implementation(group = "org.springframework.boot", name = "spring-boot-starter-webflux")
     // Spring 2.* uses Micrometer for Metrics by default. We are going to use the prometheus implementation so we can gather information used for K8s monitoring.
     implementation(group = "io.micrometer", name = "micrometer-registry-prometheus")
 
     // Library for String manipulations
     implementation(group = "org.apache.commons", name = "commons-lang3", version = "3.9")
-
-    // to indicate this is an oauth2 resource server
-    implementation(group = "org.springframework.security", name = "spring-security-oauth2-resource-server")
-
-    // to be able to use JWT tokens
-    implementation(group = "org.springframework.security", name = "spring-security-oauth2-jose")
-
-    // Dependency to obtain the flexible attributes converter.
-    implementation(group = "nl.vodafoneziggo", name = "vfz-common-infra-localdb", version = vfzCommonsVersion)
 
     // contains the handling of sql source files
     implementation(group = "org.hawaiiframework", name = "hawaii-core", version = hawaiiFrameworkVersion)
@@ -133,44 +118,17 @@ dependencies {
     // contains the auto configuration for Hawaii logging.
     implementation(group = "org.hawaiiframework", name = "hawaii-starter-logging", version = hawaiiFrameworkVersion)
 
-    // contains the BaseJdbcRepository code.
-    implementation(group = "org.hawaiiframework", name = "hawaii-framework-incubator", version = "1.0.0.A3")
-
-    // Dependency to obtain the check on the authorization (temporary part of this service until moved to the gateway) .
-    implementation(group = "nl.vodafoneziggo", name = "vfz-common-authorization-boot-starter", version = vfzCommonsVersion)
-
-    // datasource proxy for logging
-    implementation(group = "net.ttddyy", name = "datasource-proxy", version = "1.4.2")
-
-    // provides an async framework which enables us to control query timeouts etc.
-    implementation("org.hawaiiframework", name = "hawaii-async", version = hawaiiFrameworkVersion)
-
-    // jdbc template is used to connect to the database.
-    implementation(group = "org.springframework", name = "spring-jdbc")
-    // the oracle jdbc driver.
-    implementation(group = "com.oracle.jdbc", name = "ojdbc10", version = "19.3")
-    // apache commons pool 2 and dbcp 2 handle the pooled connections.
-    implementation(group = "org.apache.commons", name = "commons-pool2", version = "2.8.0")
-    implementation(group = "org.apache.commons", name = "commons-dbcp2", version = "2.7.0")
-
-    // json path to parse the simtypes.json values.
-    implementation(group = "com.jayway.jsonpath", name = "json-path", version = "2.4.0")
-
-    // mapstruct is used to generate code to map from domain model classes to rest application model classes
-    implementation(group = "org.mapstruct", name = "mapstruct-jdk8", version = mapStructVersion)
-    annotationProcessor(group = "org.mapstruct", name = "mapstruct-processor", version = mapStructVersion)
-
-    // Logstash encoder for logging in JSON format
-    implementation(group = "net.logstash.logback", name = "logstash-logback-encoder", version = "6.3")
-
-    // Overridden to get rid of the vulnerability in version 7.8
-    implementation(group = "com.nimbusds", name = "nimbus-jose-jwt", version = "8.10")
-
-    // Support for encrypted configuration properties
-    implementation("com.github.ulisesbocchio", name = "jasypt-spring-boot-starter", version = "3.0.2")
-
     // Avro to format messages that are sent over Kafka.
     implementation("org.apache.avro:avro:1.10.0")
+
+    // Avro serializers
+    implementation(group = "io.confluent", name = "kafka-avro-serializer", version = "5.5.1")
+
+    // Spring support for Kafka
+    implementation(group = "org.springframework.kafka", name = "spring-kafka")
+
+    // Kafka clients, such as producer and consumer
+    implementation(group = "org.apache.kafka", name = "kafka-clients")
 
     testImplementation(group = "org.springframework.boot", name = "spring-boot-starter-test") {
         exclude(group = "com.vaadin.external.google")
@@ -181,10 +139,6 @@ dependencies {
     // www.spockframework.org is the groovy based test framework providing the specifications for our tests.
     testImplementation(group = "org.spockframework", name = "spock-core", version = spockFrameWorkVersion)
     testImplementation(group = "org.spockframework", name = "spock-spring", version = spockFrameWorkVersion)
-    // spring security test support
-    testImplementation(group = "org.springframework.security", name = "spring-security-test")
-    // supports to mock a web server, similar to wiremock, recommended by the spring team
-    testImplementation(group= "com.squareup.okhttp3", name = "mockwebserver")
 
     // Spring Boot test support, among others the @SpringBootTest annotation
     itestImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -193,24 +147,6 @@ dependencies {
     // Spock Spring bindings
     // See https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-testing-spring-boot-applications-with-spock
     itestImplementation(group = "org.spockframework", name = "spock-spring", version = spockFrameWorkVersion)
-    // This delivers the @AutoconfigureWiremock annotation, wiremock itself is pulled in transitively
-    itestImplementation(group = "org.springframework.cloud", name = "spring-cloud-contract-wiremock", version = "2.2.1.RELEASE")
-    //
-    itestImplementation(group = "nl.vodafoneziggo", name = "vfz-common-test-support", version = vfzCommonsVersion)
-}
-
-/**
- * Make the itest source set contain the main and test classpath, so we can use test (helper) code in itest as well.
- */
-itestSourceSet {
-    compileClasspath = sourceSets["main"].compileClasspath +
-            sourceSets["main"].output +
-            sourceSets["test"].compileClasspath +
-            sourceSets["test"].output
-    runtimeClasspath = sourceSets["main"].runtimeClasspath +
-            sourceSets["main"].output +
-            sourceSets["test"].runtimeClasspath +
-            sourceSets["test"].output
 }
 
 /**
@@ -261,7 +197,7 @@ tasks.getByName<org.springframework.boot.gradle.tasks.bundling.BootJar>("bootJar
 checkstyle {
     // use one common config file for all subprojects
     configFile = project(":").file("config/checkstyle/checkstyle.xml")
-    configProperties.put("suppressionFile", project(":").file("config/checkstyle/suppressions.xml"))
+    configProperties["suppressionFile"] = project(":").file("config/checkstyle/suppressions.xml")
 }
 
 /**
@@ -279,23 +215,31 @@ pmd {
 }
 
 /**
+ * Excludes must be configured on the PMD task.
+ */
+tasks.withType<Pmd> {
+    excludes.add("**/nl/vodafoneziggo/ccam/event/**")
+}
+
+/**
  * Configuration of spotbugs with our exclusion configuration.
  */
-spotbugs {
+spotbugs() {
     // the exclude filter
-    excludeFilterConfig = resources.text.fromFile(projectDir.path + "/config/spotbugs/exclude.xml")
+    excludeFilter.set(file("config/spotbugs/exclude.xml"))
 }
 
 /**
  * Configuration of the Spot bugs task.
  * The default is xml enabled, html is preferred so we can use a browser to view the report.
  */
-tasks.withType<SpotBugsTask> {
+tasks.withType<com.github.spotbugs.snom.SpotBugsTask> {
     val format = findProperty("spotbugsReportFormat")
     val xmlFormat = (format == "xml")
+
     reports {
-        html.isEnabled = !xmlFormat
-        xml.isEnabled = xmlFormat
+        maybeCreate("html").isEnabled = !xmlFormat
+        maybeCreate("xml").isEnabled = xmlFormat
     }
 }
 

@@ -3,6 +3,9 @@ package nl.vodafoneziggo.ccam;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * The main class for this application.
+ */
 @SpringBootApplication
 @SuppressWarnings({"checkstyle:HideUtilityClassConstructor", "PMD.UseUtilityClass"})
 public class Application {
