@@ -1,0 +1,9 @@
+{
+  "type": "enum",
+  "name": "MessageTypeDto",
+  "namespace": "nl.vodafoneziggo.ccam.event",
+  "symbols": [
+    "REQUEST",
+    "RESPONSE"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "type": "record",
+  "name": "RequestResponseEventValueDto",
+  "namespace": "nl.vodafoneziggo.ccam.event",
+  "fields": [
+    {
+      "name": "client",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "api",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "size",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null
+    },
+    {
+      "name": "type",
+      "type": [
+        "null",
+        "MessageTypeDto"
+      ],
+      "default": null
+    }
+  ]
+}
